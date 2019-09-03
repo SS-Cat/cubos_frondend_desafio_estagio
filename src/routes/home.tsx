@@ -5,6 +5,7 @@ import { Card } from 'components/Card';
 import { Container } from 'components/Container';
 import { WanderingCubes } from 'styled-spinkit'
 import { IdToGenre, GenreToId } from 'helpers/generos';
+import { Circle } from 'components/Circle';
 
 type Movie = {
     id: number;
@@ -20,7 +21,6 @@ export const Home: React.FC = () => {
     const [search, setSearch] = useState('')
     const [movies, setMovies] = useState([])
     const [loading, setLoading] = useState(false)
-    const [page, setPage] = useState(1)
 
     const baseUrl = 'https://api.themoviedb.org/3'
 
@@ -67,6 +67,14 @@ export const Home: React.FC = () => {
         fetchData()
     }, [])
 
+    const [page, setPage] = useState(1)
+
+    const indexOfLast = page * 5;
+    const indexOfFirst = indexOfLast - page;
+    const moviesPage = movies.slice(indexOfFirst, indexOfLast);
+    const pageNumbers = Array.from({ length: Math.ceil(movies.length / page) }, (e, i) => i)
+    console.log(moviesPage)
+
     return (
         <>
             <Header title="Movies" />
@@ -92,6 +100,33 @@ export const Home: React.FC = () => {
                         )
                     })
                 }
+                {/* <ul style={{
+                    // width: '100vw',
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
+                    {
+                        pageNumbers.map(number => {
+                            return (
+                                page === number ?
+                                <Circle key={number}>
+                                    {number}
+                                </Circle>
+                                :
+                              <li
+                                key={number}
+                                id={String(number)}
+                                onClick={e => setPage(Number(e.currentTarget.id))}
+                                style={{
+                                    color: '#116193'
+                                }}
+                              >
+                                {number}
+                              </li>
+                            )
+                          })
+                    }
+                </ul> */}
             </Container>
         </>
     )
