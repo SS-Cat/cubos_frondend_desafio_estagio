@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 export const CardContainer = styled.div`
     background: ${props => props.theme.background};
-    height: 600px;
+    height: 350px;
     width: 100%;
+    margin-bottom: 5%;
     z-index: -2;
     overflow: hidden;
 
@@ -20,6 +21,7 @@ export const CardImage = styled.img`
     grid-area: image;
     width: 100%;
     height: 100%;
+    object-fit: cover;
 `;
 
 export const CardHeader = styled.div`

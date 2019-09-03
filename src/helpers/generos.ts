@@ -77,14 +77,21 @@ const genres: Array<{ id: number, name: string}> = [
     }
 ]
 
-interface Genre {
+interface GenreId {
     [key: string]: number;
 }
+interface IdGenre {
+    [key: number]: string;
+}
 
-const arr: Genre = {}
+const GenreToId: GenreId = {}
+const IdToGenre: IdGenre = {}
 
 genres.forEach(e => {
-    arr[e.name] = e.id 
+    IdToGenre[e.id] = e.name
 })
 
-export default arr
+export {
+    GenreToId,
+    IdToGenre
+}

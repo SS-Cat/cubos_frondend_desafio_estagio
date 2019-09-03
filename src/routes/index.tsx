@@ -1,11 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Header } from 'components/Header';
+import { Home } from './home';
+import { Movie } from './movie'
 
-export default function Routes() {
+export const Routes: React.FC = () => {
     return(
         <Router>
-            <Route path='/' exact component={Header} />
+            <Route path='/' exact component={Home} />
+            <Route path='/movie' exact component={Movie} />
         </Router>
     )
 }

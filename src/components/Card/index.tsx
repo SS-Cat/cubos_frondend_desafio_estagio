@@ -42,7 +42,7 @@ export const Card: React.FC<Prop> = ({ rated, imageLink, title, year, content, t
                     display: 'flex',
                     alignItems: 'flex-start'
                 }}>
-                   {tags.map(e => <Chip style={{marginLeft: 10}}>{e}</Chip>)}
+                   {tags.map((tag, index) => <Chip key={index} style={{marginLeft: 10}}>{tag}</Chip>)}
                 </div>
             </CardContent>
         </CardContainer>
