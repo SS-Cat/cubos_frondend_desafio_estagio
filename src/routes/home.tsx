@@ -41,15 +41,14 @@ export const Home: React.FC = () => {
             const searchQuery = encodeURIComponent(search)
             let result = await fetch(`${baseUrl}/search/movie?api_key=da21e2f78ba27258188cae351d113688&language=pt-BR&query=${searchQuery}&page=1&include_adult=false`)
                 .then(res => res.json())
-            
-            
-            if(!result.total_results) {
+
+
+            if (!result.total_results) {
                 result = await fetch(`${baseUrl}/discover/movie?with_genres=${GenreToId[searchQuery]}`)
                     .then(res => res.json())
             }
-            
-            setMovies(result.results)
-            console.log(result)
+
+            setMovies(Array.from(result.results))
             return setLoading(false)
         }
 
@@ -67,25 +66,25 @@ export const Home: React.FC = () => {
         fetchData()
     }, [])
 
+
     const [page, setPage] = useState(1)
 
     const indexOfLast = page * 5;
-    const indexOfFirst = indexOfLast - page;
+    const indexOfFirst = indexOfLast - 5;
     const moviesPage = movies.slice(indexOfFirst, indexOfLast);
-    const pageNumbers = Array.from({ length: Math.ceil(movies.length / page) }, (e, i) => i)
-    console.log(moviesPage)
+    const pageNumbers = Array.from({ length: Math.ceil(movies.length / 5) }, (e, i) => i + 1)
 
     return (
         <>
             <Header title="Movies" />
             <Container>
                 <SearchBar
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {setSearch(e.target.value)}}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setSearch(e.target.value) }}
                     value={search}
                     onKeyDown={fetchMovie}
                 />
-                {   loading ? <WanderingCubes/>
-                    : movies.map((movie: Movie) => {
+                {loading ? <WanderingCubes />
+                    : moviesPage.map((movie: Movie) => {
                         return (
                             <Card
                                 key={movie.id}
@@ -100,33 +99,43 @@ export const Home: React.FC = () => {
                         )
                     })
                 }
-                {/* <ul style={{
-                    // width: '100vw',
+
+                <div style={{
+                    width: '100%',
                     display: 'flex',
-                    alignItems: 'center'
-                }}>
-                    {
-                        pageNumbers.map(number => {
-                            return (
-                                page === number ?
-                                <Circle key={number}>
-                                    {number}
-                                </Circle>
-                                :
-                              <li
-                                key={number}
-                                id={String(number)}
-                                onClick={e => setPage(Number(e.currentTarget.id))}
-                                style={{
-                                    color: '#116193'
-                                }}
-                              >
-                                {number}
-                              </li>
-                            )
-                          })
-                    }
-                </ul> */}
+                    justifyContent: 'center'
+                }} >
+                    <ul style={{
+                        width: '300px',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                        {
+                            pageNumbers.map(number => {
+                                return (
+                                    page === number ?
+                                        <Circle key={number}>
+                                            {number}
+                                        </Circle>
+                                        :
+                                        <li
+                                            key={number}
+                                            id={String(number)}
+                                            style={{
+                                                fontSize: '1.3rem',
+                                                color: '#116193',
+                                                cursor: 'pointer'
+                                            }}
+                                            onClick={e => setPage(Number(e.currentTarget.id))}
+                                        >
+                                            {number}
+                                        </li>
+                                )
+                            })
+                        }
+                    </ul>
+                </div>
             </Container>
         </>
     )
